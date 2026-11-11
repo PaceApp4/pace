@@ -1,22 +1,67 @@
-# Pace – handleiding fase 1
+# Pace – handleiding versie 2
 
-Deze handleiding is geschreven voor Windows 11 en een iPhone. Volg de stappen in volgorde. Namen van knoppen kunnen per versie een klein beetje afwijken.
+Geschreven voor Windows 11 en een iPhone. Namen van knoppen kunnen per versie een klein beetje afwijken.
 
-## Wat zit er in fase 1
+## Wat is nieuw in versie 2
 
-- Dashboard met ringen voor calorieën en water, en balken voor eiwit, koolhydraten, vet, vezels en suiker.
-- Water toevoegen met één tik (glas of fles), met een knop om de laatste ongedaan te maken.
-- Voedingsdagboek per maaltijd: ontbijt, lunch, diner en snacks.
-- Eigen producten aanmaken, zoeken, wijzigen en als favoriet markeren.
-- Eerder gebruikte producten staan bovenaan, met de hoeveelheid van de vorige keer al ingevuld.
-- Terugbladeren naar eerdere dagen.
-- Doelen en waterknoppen instellen.
-- Back-up maken en terugzetten (JSON-bestand).
-- Installeerbaar op je beginscherm en offline bruikbaar.
+**Uiterlijk**
+- Nieuwe, zakelijke stijl met lichte en donkere modus. De app volgt automatisch je iPhone; je kunt het ook vastzetten bij **Meer › Weergave**.
 
-Producten zoeken in Open Food Facts en de barcodescanner komen in fase 2. Tot die tijd voer je producten één keer zelf in vanaf het etiket.
+**Vandaag**
+- Grote calorie-ring met daaronder drie kleine ringen voor eiwitten, koolhydraten en vetten.
+- Water toevoegen met **+250** en **+500** zonder te scrollen, met een knop om de laatste ongedaan te maken.
+- Slaapscore en stappen. Tik op een van de twee kaarten om ze zelf in te vullen, of gebruik **Stappen en slaap plakken uit Opdracht** (de koppeling met Apple Gezondheid stellen we in de volgende stap samen in).
+- Trainingsblok met de melding **Voldoende bewogen** (genoeg stappen óf een workout).
+
+**Profiel en voedingsplan** (Meer › Profiel en voedingsplan)
+- Vul geslacht, leeftijd, lengte, gewicht, activiteit en streefdoel in (afvallen, op gewicht of spieropbouw).
+- Je krijgt een voorgesteld plan met calorieën, eiwit, koolhydraten, vet, vezels en water. Met **Plan overnemen als dagdoelen** zet je het in de app. Daarna kun je alles nog aanpassen bij **Dagdoelen**.
+
+**Training**
+- **Lege workout starten**: de timer loopt meteen; je voegt oefeningen toe terwijl je traint. Vergeten te starten? Tik op **Tijd aanpassen**.
+- **Routines**: vooraf ingestelde workouts met oefeningen, aantal sets en rusttijd. Een lege workout kun je bij het afronden ook als routine bewaren.
+- Loggen zoals in Hevy: per set kilo en herhalingen, met in de kolom **Vorige** wat je de vorige keer deed. Tik op een lege set af en de waarden van vorige keer worden ingevuld. Tik op de waarde bij Vorige om die over te nemen.
+- Rusttimer na elke afgevinkte set (tik op het klokje bij een oefening om de rusttijd te wijzigen). Een **PR**-label verschijnt zodra je een record zet.
+- Met **Minimaliseren** kun je tijdens de workout andere schermen gebruiken. De workout wordt steeds bewaard, ook als je de app sluit.
+
+**Voortgang**
+- **Kalender**: blauwe dagen = workout, groen puntje = voldoende bewogen. Met het aantal workouts, dagen bewogen en je huidige reeks.
+- **Oefeningen**: per oefening een grafiek (geschat 1RM, zwaarste gewicht of volume), je records en geschiedenis.
+- **Lichaam**: metingen van je weegschaal invoeren (gewicht, lichaamsvet, skeletspier, spiermassa, BMI) met grafiek. Je nieuwste gewicht wordt ook in je profiel gezet.
+
+**Hevy-gegevens** (Meer › Hevy-gegevens importeren)
+- Exporteer in Hevy: **Profiel › Instellingen › Export & import › Export workouts**. Kies daarna in Pace het CSV-bestand. Bekende oefeningen worden gekoppeld aan de Pace-bibliotheek, onbekende worden automatisch aangemaakt. Twee keer importeren geeft geen dubbele workouts.
 
 ---
+
+## Bijwerken van fase 1 naar versie 2
+
+De nieuwe bestanden staan al in je map `pace-fase1\pace`. Je gegevens op je iPhone blijven bewaard.
+
+1. **Eerst een back-up op je iPhone.** Open Pace, tik op **Meer › Back-up maken** en kies **Bewaar in Bestanden**.
+2. Open **Visual Studio Code** met de map `pace` (**File › Open Folder…**).
+3. Klik op **Terminal › New Terminal** en typ (er is een nieuw lettertype bijgekomen):
+
+   ```
+   npm install
+   ```
+
+4. Typ daarna:
+
+   ```
+   npm run dev
+   ```
+
+   Houd **Ctrl** ingedrukt en klik op `http://localhost:5173/`. Kijk of alles werkt. Stoppen doe je met **Ctrl + C**.
+5. Open **GitHub Desktop**. Links zie je de gewijzigde bestanden.
+6. Typ linksonder bij **Summary**: `Versie 2`.
+7. Klik op **Commit to main** en daarna bovenin op **Push origin**.
+8. Wacht 1 à 2 minuten. Op github.com onder **Actions** zie je een groen vinkje als het klaar is.
+9. Sluit Pace op je iPhone helemaal af (omhoog vegen) en open hem opnieuw. Zie je nog de oude versie, doe het dan nog een keer.
+
+---
+
+## Eerste installatie (alleen nodig op een nieuwe laptop)
 
 ## Stap 1 – Programma's installeren (eenmalig)
 
@@ -112,15 +157,6 @@ Dit is alleen om te testen. Wat je hier invoert, staat los van de online versie.
 
 **Belangrijk:** de app op je beginscherm en de site in Safari hebben elk hun eigen gegevens. Gebruik dus altijd het icoon op je beginscherm.
 
-## Stap 7 – Een nieuwe versie online zetten (bij volgende fases)
-
-1. Vervang de bestanden in de map `pace` door de nieuwe versie.
-2. Open **GitHub Desktop**. Links zie je de gewijzigde bestanden.
-3. Typ linksonder bij **Summary** een korte omschrijving, bijvoorbeeld `Fase 2`.
-4. Klik op **Commit to main**.
-5. Klik bovenin op **Push origin**.
-6. Na 1 à 2 minuten staat de nieuwe versie online. Sluit de app op je iPhone helemaal af en open hem opnieuw (soms twee keer) om de nieuwe versie te zien. Je gegevens blijven bewaard.
-
 ## Back-up maken
 
 1. Open de app en tik op **Meer**.
@@ -136,14 +172,20 @@ Maak in ieder geval een back-up voordat je een nieuwe fase installeert.
 | Bestand of map | Wat het doet |
 | --- | --- |
 | `index.html` | De lege pagina waarin de app start |
-| `vite.config.js` | Instellingen voor bouwen en voor installeren op het beginscherm |
-| `src/main.jsx` | Start de app |
-| `src/App.jsx` | Bepaalt welk scherm zichtbaar is |
-| `src/db.js` | De lokale database en de standaarddoelen |
-| `src/schermen/` | Eén bestand per tab: Vandaag, Voeding, Training, Voortgang, Meer |
-| `src/components/` | Herbruikbare onderdelen, zoals de ring, balk en invoervelden |
-| `src/lib/` | Rekenwerk: datums, voedingswaarden en back-up |
-| `public/icons/` | Het app-icoon |
+| `vite.config.js` | Instellingen voor bouwen, offline gebruik en het beginscherm |
+| `src/main.jsx` | Start de app en kiest licht of donker |
+| `src/App.jsx` | Bepaalt welk scherm zichtbaar is, en de balk 'workout bezig' |
+| `src/db.js` | De lokale database (versie 2) en standaardwaarden |
+| `src/index.css` | De kleuren van licht (palet 03) en donker (palet 02) |
+| `src/schermen/` | Vandaag, Voeding, Training, WorkoutBezig, Voortgang en Meer |
+| `src/components/` | Herbruikbare onderdelen: ringen, balken, vensters, grafiek, kiezers |
+| `src/lib/plan.js` | Berekening van het voorgestelde voedingsplan |
+| `src/lib/gezondheid.js` | Stappen en slaap inlezen en de slaapscore berekenen |
+| `src/lib/training.js` | Rekenwerk voor workouts: vorige sets, 1RM, records en volume |
+| `src/lib/hevy.js` | Import van de Hevy-export |
+| `src/lib/oefeningen.js` | De standaard oefeningenbibliotheek |
 | `.github/workflows/deploy.yml` | Zet de app automatisch online na elke **Push origin** |
 
-De standaarddoelen (2.200 kcal, 140 g eiwit, 2.000 ml water, enzovoort) zijn voorbeeldwaarden. Pas ze aan in de app onder **Meer**.
+**Over het voedingsplan:** het voorstel gebruikt de Mifflin-St Jeor-formule voor je rustverbranding, vermenigvuldigd met je activiteit. Afvallen = 20% minder, spieropbouw = 300 kcal extra. Eiwit: 2,2 g/kg bij afvallen, 2,0 bij spieropbouw, 1,8 bij op gewicht. Vet: minstens 25% van je calorieën. De rest is koolhydraten. Het is een startpunt, geen medisch advies.
+
+**Over de slaapscore:** heb je zelf een score uit Zepp ingevuld, dan toont Pace die. Anders rekent Pace een score uit je slaapduur (ten opzichte van je slaapdoel), het aandeel diepe en REM-slaap en de tijd dat je wakker lag.

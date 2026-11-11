@@ -1,11 +1,12 @@
 import { db } from '../db.js';
+import { STANDAARD_OEFENINGEN } from './oefeningen.js';
 import { vandaag } from './datum.js';
 
 // Maakt één JSON-bestand met alle gegevens uit de app.
 export async function exporteer() {
   const data = {
     app: 'pace',
-    versie: 1,
+    versie: 2,
     gemaaktOp: new Date().toISOString(),
     tabellen: {},
   };
@@ -59,6 +60,10 @@ export async function importeer(bestand) {
       if (Array.isArray(rijen) && rijen.length > 0) {
         await tabel.bulkAdd(rijen);
       }
+    }
+    // Oude back-up (fase 1) zonder oefeningen: de standaardlijst terugzetten.
+    if (!data.tabellen.oefeningen?.length) {
+      await db.oefeningen.bulkAdd(STANDAARD_OEFENINGEN);
     }
   });
 }

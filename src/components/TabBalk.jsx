@@ -1,41 +1,37 @@
+import Icoon from './Icoon.jsx';
+
 export const TABS = [
-  { sleutel: 'vandaag', label: 'Vandaag', icoon: '🏠' },
-  { sleutel: 'voeding', label: 'Voeding', icoon: '🍽️' },
-  { sleutel: 'training', label: 'Training', icoon: '🏋️' },
-  { sleutel: 'voortgang', label: 'Voortgang', icoon: '📈' },
-  { sleutel: 'meer', label: 'Meer', icoon: '⚙️' },
+  { sleutel: 'vandaag', label: 'Vandaag', icoon: 'home' },
+  { sleutel: 'voeding', label: 'Voeding', icoon: 'voeding' },
+  { sleutel: 'training', label: 'Training', icoon: 'training' },
+  { sleutel: 'voortgang', label: 'Voortgang', icoon: 'grafiek' },
+  { sleutel: 'meer', label: 'Meer', icoon: 'meer' },
 ];
 
 // De navigatiebalk onderin het scherm.
 export default function TabBalk({ actief, kies }) {
   return (
     <nav
-      className="border-t border-violet-100 bg-white/95 backdrop-blur"
+      aria-label="Hoofdmenu"
+      className="border-t border-rand bg-kaart"
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
-      <div className="mx-auto flex max-w-md">
+      <div className="mx-auto flex max-w-md px-1.5">
         {TABS.map((tab) => {
           const isActief = tab.sleutel === actief;
           return (
             <button
               key={tab.sleutel}
-              className="knop flex flex-1 flex-col items-center gap-0.5 py-2"
+              aria-current={isActief ? 'page' : undefined}
+              className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-1 border-t-2 text-[11px] ${
+                isActief
+                  ? 'border-primair font-semibold text-actief'
+                  : 'border-transparent font-medium text-zacht'
+              }`}
               onClick={() => kies(tab.sleutel)}
             >
-              <span
-                className={`flex h-9 w-14 items-center justify-center rounded-full text-xl ${
-                  isActief ? 'bg-violet-100' : ''
-                }`}
-              >
-                {tab.icoon}
-              </span>
-              <span
-                className={`text-[11px] font-semibold ${
-                  isActief ? 'text-violet-700' : 'text-indigo-900/50'
-                }`}
-              >
-                {tab.label}
-              </span>
+              <Icoon naam={tab.icoon} grootte={22} />
+              {tab.label}
             </button>
           );
         })}

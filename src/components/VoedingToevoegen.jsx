@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db.js';
 import { rond } from '../lib/voeding.js';
 import Venster from './Venster.jsx';
+import Icoon from './Icoon.jsx';
 import ProductFormulier from './ProductFormulier.jsx';
 import HoeveelheidFormulier from './HoeveelheidFormulier.jsx';
 
@@ -78,10 +79,10 @@ export default function VoedingToevoegen({ datum, maaltijd, sluit }) {
   }
 
   return (
-    <Venster titel={`${maaltijd.icoon} ${maaltijd.label}`} sluit={sluit}>
+    <Venster titel={maaltijd.label} sluit={sluit}>
       <div className="space-y-3">
-        <div className="flex items-center rounded-2xl bg-violet-50 px-3 focus-within:ring-2 focus-within:ring-violet-400">
-          <span>🔍</span>
+        <div className="flex items-center rounded-[12px] bg-vlak px-3 border border-rand focus-within:border-primair">
+          <Icoon naam="zoek" grootte={18} className="text-zacht" />
           <input
             className="w-full bg-transparent px-2 py-3 outline-none"
             type="search"
@@ -92,48 +93,48 @@ export default function VoedingToevoegen({ datum, maaltijd, sluit }) {
         </div>
 
         <button
-          className="knop w-full rounded-2xl bg-violet-600 py-3 font-bold text-white shadow-sm"
+          className="knop w-full rounded-[12px] bg-primair py-3 font-semibold text-op-primair"
           onClick={() => zetStap({ naam: 'product', product: null })}
         >
-          ＋ Nieuw product{zoek.trim() ? ` '${zoek.trim()}'` : ''}
+          Nieuw product{zoek.trim() ? ` '${zoek.trim()}'` : ''}
         </button>
 
         {producten.length === 0 && (
-          <p className="py-6 text-center text-indigo-900/60">
+          <p className="py-6 text-center text-zacht">
             Je hebt nog geen producten. Maak je eerste product aan met de knop hierboven. Daarna
             staat het hier klaar om met twee tikken te loggen.
           </p>
         )}
         {producten.length > 0 && gevonden.length === 0 && (
-          <p className="py-6 text-center text-indigo-900/60">Niets gevonden voor '{zoek}'.</p>
+          <p className="py-6 text-center text-zacht">Niets gevonden voor '{zoek}'.</p>
         )}
 
         <ul className="space-y-2">
           {gevonden.map((product) => (
-            <li key={product.id} className="flex items-center gap-1 rounded-2xl bg-violet-50">
+            <li key={product.id} className="flex items-center gap-1 rounded-[12px] border border-rand bg-kaart">
               <button
                 className="knop min-w-0 flex-1 px-3 py-3 text-left"
                 onClick={() => zetStap({ naam: 'hoeveelheid', product })}
               >
                 <div className="truncate font-bold">{product.naam}</div>
-                <div className="truncate text-sm text-indigo-900/60">
+                <div className="truncate text-sm text-zacht">
                   {product.merk ? `${product.merk} · ` : ''}
                   {rond(product.per100?.kcal)} kcal per 100 {product.eenheid ?? 'g'}
                 </div>
               </button>
               <button
-                className="knop h-11 w-10 text-xl"
+                className="knop flex h-11 w-10 items-center justify-center"
                 onClick={() => db.producten.update(product.id, { favoriet: !product.favoriet })}
                 aria-label={product.favoriet ? 'Geen favoriet meer' : 'Maak favoriet'}
               >
-                {product.favoriet ? '⭐' : '☆'}
+                <Icoon naam="ster" className={product.favoriet ? 'fill-current text-[#f59e0b]' : 'text-zacht'} />
               </button>
               <button
-                className="knop mr-1 h-11 w-10 text-lg"
+                className="knop mr-1 flex h-11 w-10 items-center justify-center"
                 onClick={() => zetStap({ naam: 'product', product })}
                 aria-label="Product wijzigen"
               >
-                ✏️
+                <Icoon naam="potlood" className="text-zacht" />
               </button>
             </li>
           ))}

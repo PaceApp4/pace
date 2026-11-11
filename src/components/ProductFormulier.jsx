@@ -59,7 +59,7 @@ export default function ProductFormulier({ product, beginNaam = '', klaar, verwi
       <Veld label="Merk (mag leeg blijven)" waarde={merk} wijzig={zetMerk} />
 
       <div>
-        <span className="text-sm font-semibold text-indigo-900/70">Gemeten in</span>
+        <span className="text-sm font-semibold text-zacht">Gemeten in</span>
         <div className="mt-1 grid grid-cols-2 gap-2">
           {[
             { sleutel: 'g', label: 'Gram (g)' },
@@ -67,8 +67,8 @@ export default function ProductFormulier({ product, beginNaam = '', klaar, verwi
           ].map((keuze) => (
             <button
               key={keuze.sleutel}
-              className={`knop rounded-2xl py-3 font-semibold ${
-                eenheid === keuze.sleutel ? 'bg-violet-600 text-white' : 'bg-violet-50'
+              className={`knop rounded-[12px] py-3 font-semibold ${
+                eenheid === keuze.sleutel ? 'bg-primair text-op-primair' : 'bg-vlak'
               }`}
               onClick={() => zetEenheid(keuze.sleutel)}
             >
@@ -102,17 +102,17 @@ export default function ProductFormulier({ product, beginNaam = '', klaar, verwi
         ))}
       </div>
 
-      {fout && <p className="font-semibold text-rose-600">{fout}</p>}
+      {fout && <p className="font-semibold text-over">{fout}</p>}
 
       <button
-        className="knop w-full rounded-2xl bg-violet-600 py-4 text-lg font-bold text-white shadow-sm"
+        className="knop w-full rounded-[12px] bg-primair py-3.5 text-base font-semibold text-op-primair"
         onClick={opslaan}
       >
         Opslaan
       </button>
       {product && (
         <button
-          className="knop w-full rounded-2xl bg-rose-50 py-3 font-bold text-rose-600"
+          className="knop w-full rounded-[12px] bg-vlak py-3 font-bold text-over"
           onClick={verwijder}
         >
           Product verwijderen

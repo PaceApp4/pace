@@ -1,10 +1,10 @@
 // Alles rond voedingswaarden rekenen en tonen.
 
 export const MAALTIJDEN = [
-  { sleutel: 'ontbijt', label: 'Ontbijt', icoon: '🥣' },
-  { sleutel: 'lunch', label: 'Lunch', icoon: '🥪' },
-  { sleutel: 'diner', label: 'Diner', icoon: '🍝' },
-  { sleutel: 'snacks', label: 'Snacks', icoon: '🍎' },
+  { sleutel: 'ontbijt', label: 'Ontbijt' },
+  { sleutel: 'lunch', label: 'Lunch' },
+  { sleutel: 'diner', label: 'Diner' },
+  { sleutel: 'snacks', label: 'Tussendoor' },
 ];
 
 // De voedingswaarden die we bijhouden (per 100 g of 100 ml).

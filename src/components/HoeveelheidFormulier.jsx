@@ -21,8 +21,8 @@ export default function HoeveelheidFormulier({ item, beginGram, knopTekst, opsla
         {keuzes.map((g) => (
           <button
             key={g}
-            className={`knop rounded-full px-4 py-2 font-semibold ${
-              gram === g ? 'bg-violet-600 text-white' : 'bg-violet-50'
+            className={`knop rounded-full px-4 py-2 min-h-11 font-semibold ${
+              gram === g ? 'bg-primair text-op-primair' : 'bg-vlak'
             }`}
             onClick={() => zetTekst(String(g))}
           >
@@ -32,8 +32,8 @@ export default function HoeveelheidFormulier({ item, beginGram, knopTekst, opsla
         ))}
       </div>
 
-      <div className="rounded-2xl bg-violet-50 p-4">
-        <div className="text-2xl font-extrabold">{rond(w.kcal)} kcal</div>
+      <div className="rounded-[12px] bg-vlak p-4">
+        <div className="text-2xl font-bold">{rond(w.kcal)} kcal</div>
         <div className="mt-2 grid grid-cols-5 gap-1 text-center text-xs">
           {[
             ['Eiwit', w.eiwit],
@@ -44,14 +44,14 @@ export default function HoeveelheidFormulier({ item, beginGram, knopTekst, opsla
           ].map(([label, waarde]) => (
             <div key={label}>
               <div className="text-base font-bold">{rond1(waarde)}</div>
-              <div className="text-indigo-900/60">{label}</div>
+              <div className="text-zacht">{label}</div>
             </div>
           ))}
         </div>
       </div>
 
       <button
-        className="knop w-full rounded-2xl bg-violet-600 py-4 text-lg font-bold text-white shadow-sm disabled:opacity-40"
+        className="knop w-full rounded-[12px] bg-primair py-3.5 text-base font-semibold text-op-primair disabled:opacity-40"
         disabled={gram <= 0}
         onClick={() => opslaan(gram)}
       >
@@ -59,7 +59,7 @@ export default function HoeveelheidFormulier({ item, beginGram, knopTekst, opsla
       </button>
       {verwijder && (
         <button
-          className="knop w-full rounded-2xl bg-rose-50 py-3 font-bold text-rose-600"
+          className="knop w-full rounded-[12px] bg-vlak py-3 font-bold text-over"
           onClick={verwijder}
         >
           Verwijderen

@@ -1,26 +1,20 @@
 // Een voortgangsring. De inhoud (children) komt in het midden te staan.
-export default function Ring({
-  waarde,
-  doel,
-  grootte = 160,
-  dikte = 14,
-  kleur = '#8b5cf6',
-  achtergrond = '#ede9fe',
-  children,
-}) {
+// Boven 100% kleurt de ring rood (over doel).
+export default function Ring({ waarde, doel, grootte = 160, dikte = 12, kleur, children, overKleur }) {
   const straal = (grootte - dikte) / 2;
   const omtrek = 2 * Math.PI * straal;
   const deel = doel > 0 ? Math.min(waarde / doel, 1) : 0;
+  const isOver = overKleur && doel > 0 && waarde > doel;
 
   return (
     <div className="relative shrink-0" style={{ width: grootte, height: grootte }}>
-      <svg width={grootte} height={grootte} className="-rotate-90">
+      <svg width={grootte} height={grootte} className="-rotate-90" aria-hidden="true">
         <circle
           cx={grootte / 2}
           cy={grootte / 2}
           r={straal}
           fill="none"
-          stroke={achtergrond}
+          stroke="var(--pace-spoor)"
           strokeWidth={dikte}
         />
         <circle
@@ -28,7 +22,7 @@ export default function Ring({
           cy={grootte / 2}
           r={straal}
           fill="none"
-          stroke={kleur}
+          stroke={isOver ? overKleur : kleur}
           strokeWidth={dikte}
           strokeLinecap="round"
           strokeDasharray={omtrek}

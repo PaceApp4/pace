@@ -1,11 +1,74 @@
+@import "@fontsource-variable/inter";
 @import "tailwindcss";
 
-/* Rond, vriendelijk lettertype (op iPhone is dit SF Pro Rounded). */
-@theme {
-  --font-sans: ui-rounded, "SF Pro Rounded", "Nunito", system-ui, -apple-system,
-    "Segoe UI", sans-serif;
+/*
+  Kleuren van Pace v2.
+  Licht = palet 03 (indigo), donker = palet 02 (blauw).
+  De app kiest automatisch op basis van je iPhone-instelling,
+  of wat je bij Meer > Weergave kiest.
+*/
+:root,
+[data-thema="licht"] {
+  --pace-bg: #f8fafc;
+  --pace-kaart: #ffffff;
+  --pace-vlak: #f1f5f9;
+  --pace-rand: #e2e8f0;
+  --pace-tekst: #111827;
+  --pace-zacht: #64748b;
+  --pace-primair: #4f46e5;
+  --pace-op-primair: #ffffff;
+  --pace-accent: #a78bfa;
+  --pace-spoor: #e2e8f0;
+  --pace-actief: #4f46e5;
+  --pace-eiwit: #4f46e5;
+  --pace-koolh: #a78bfa;
+  --pace-vet: #f59e0b;
+  --pace-water: #4f46e5;
+  --pace-stappen: #0a0f1f;
+  --pace-slaap: #a78bfa;
+  color-scheme: light;
 }
 
+[data-thema="donker"] {
+  --pace-bg: #111827;
+  --pace-kaart: #1f2937;
+  --pace-vlak: #374151;
+  --pace-rand: #374151;
+  --pace-tekst: #f3f4f6;
+  --pace-zacht: #9ca3af;
+  --pace-primair: #2563eb;
+  --pace-op-primair: #ffffff;
+  --pace-accent: #22d3ee;
+  --pace-spoor: #374151;
+  --pace-actief: #f3f4f6;
+  --pace-eiwit: #2563eb;
+  --pace-koolh: #22d3ee;
+  --pace-vet: #f59e0b;
+  --pace-water: #22d3ee;
+  --pace-stappen: #2563eb;
+  --pace-slaap: #22d3ee;
+  color-scheme: dark;
+}
+
+@theme {
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-bg: var(--pace-bg);
+  --color-kaart: var(--pace-kaart);
+  --color-vlak: var(--pace-vlak);
+  --color-rand: var(--pace-rand);
+  --color-tekst: var(--pace-tekst);
+  --color-zacht: var(--pace-zacht);
+  --color-primair: var(--pace-primair);
+  --color-op-primair: var(--pace-op-primair);
+  --color-accent: var(--pace-accent);
+  --color-actief: var(--pace-actief);
+  --color-goed: #22c55e;
+  --color-letop: #f97316;
+  --color-over: #ef4444;
+}
+
+/* Basisregels in een 'layer', zodat Tailwind-klassen ze kunnen overschrijven. */
+@layer base {
 html,
 body,
 #root {
@@ -14,9 +77,9 @@ body,
 
 body {
   margin: 0;
-  background: linear-gradient(160deg, #f5f3ff 0%, #fdf2f8 50%, #eff6ff 100%);
-  background-attachment: fixed;
-  color: #1e1b4b;
+  background: var(--pace-bg);
+  color: var(--pace-tekst);
+  font-variant-numeric: tabular-nums;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
 }
@@ -28,21 +91,8 @@ textarea,
 button {
   font-size: 16px;
   font-family: inherit;
+  color: inherit;
 }
-
-/* Kleine animaties */
-@keyframes pop {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.08);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
 }
 
 @keyframes omhoog {
@@ -63,23 +113,33 @@ button {
   }
 }
 
-.animatie-pop {
-  animation: pop 0.35s ease-out;
-}
-
 .animatie-omhoog {
-  animation: omhoog 0.25s ease-out;
+  animation: omhoog 0.22s ease-out;
 }
 
 .animatie-vervaag {
-  animation: vervaag 0.2s ease-out;
+  animation: vervaag 0.18s ease-out;
 }
 
-/* Knoppen veren een beetje in als je erop tikt. */
+@layer components {
+/* Kaart: de basis van bijna elk blok. */
+.kaart {
+  background: var(--pace-kaart);
+  border: 1px solid var(--pace-rand);
+  border-radius: 14px;
+  padding: 16px;
+}
+
 .knop {
-  transition: transform 0.1s ease;
+  transition: opacity 0.1s ease, transform 0.1s ease;
 }
 
 .knop:active {
-  transform: scale(0.94);
+  opacity: 0.75;
+  transform: scale(0.98);
+}
+
+.knop:disabled {
+  opacity: 0.4;
+}
 }
