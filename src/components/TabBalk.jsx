@@ -23,14 +23,18 @@ export default function TabBalk({ actief, kies }) {
             <button
               key={tab.sleutel}
               aria-current={isActief ? 'page' : undefined}
-              className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-1 border-t-2 text-[11px] ${
-                isActief
-                  ? 'border-primair font-semibold text-actief'
-                  : 'border-transparent font-medium text-zacht'
+              className={`flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 pt-1.5 text-[11px] ${
+                isActief ? 'font-semibold text-primair' : 'font-medium text-zacht'
               }`}
               onClick={() => kies(tab.sleutel)}
             >
-              <Icoon naam={tab.icoon} grootte={22} />
+              <span
+                className={`flex h-8 w-14 items-center justify-center rounded-full transition-colors ${
+                  isActief ? 'bg-primair/15' : ''
+                }`}
+              >
+                <Icoon naam={tab.icoon} grootte={22} dikte={isActief ? 2 : 1.75} />
+              </span>
               {tab.label}
             </button>
           );

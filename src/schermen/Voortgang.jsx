@@ -6,6 +6,7 @@ import { e1rm, kgTekst, recordsVan, sessiesVan, volumeVan, werksets } from '../l
 import { rond, rond1 } from '../lib/voeding.js';
 import { Keuze } from '../components/Veld.jsx';
 import Icoon from '../components/Icoon.jsx';
+import Badge from '../components/Badge.jsx';
 import Venster from '../components/Venster.jsx';
 import LijnGrafiek from '../components/LijnGrafiek.jsx';
 import WorkoutDetail from '../components/WorkoutDetail.jsx';
@@ -14,7 +15,7 @@ import MetingVenster, { METING_VELDEN } from '../components/MetingVenster.jsx';
 export default function Voortgang() {
   const [deel, zetDeel] = useState('kalender');
   return (
-    <div className="space-y-3">
+    <div className="binnenkomen space-y-3">
       <h1 className="text-[26px] font-bold tracking-tight">Voortgang</h1>
       <Keuze
         waarde={deel}
@@ -107,8 +108,9 @@ function Kalender() {
                 aria-label={`${langeDatum(d)}${getraind ? ', workout' : ''}${genoeg ? ', voldoende bewogen' : ''}`}
               >
                 <span
+                  style={getraind ? { background: 'var(--pace-hero)' } : undefined}
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-sm ${
-                    getraind ? 'bg-primair font-semibold text-op-primair' : ''
+                    getraind ? 'font-semibold text-white' : ''
                   } ${d === gekozen ? 'ring-2 ring-tekst/40' : ''} ${d === vandaag() && !getraind ? 'font-bold text-primair' : ''}`}
                 >
                   {Number(d.slice(8))}
@@ -130,11 +132,12 @@ function Kalender() {
 
       <div className="grid grid-cols-3 gap-2 text-center">
         {[
-          ['Workouts', aantalWorkouts],
-          ['Dagen bewogen', aantalBewogen],
-          ['Reeks', `${reeks} d`],
-        ].map(([label, waarde]) => (
-          <div key={label} className="kaart !p-3">
+          ['Workouts', aantalWorkouts, 'training', 'var(--pace-training)'],
+          ['Dagen bewogen', aantalBewogen, 'stappen', 'var(--pace-stappen)'],
+          ['Reeks', `${reeks} d`, 'vlam', 'var(--pace-roze)'],
+        ].map(([label, waarde, icoon, kleur]) => (
+          <div key={label} className="kaart tint flex flex-col items-center gap-1 !p-3" style={{ '--tint': kleur }}>
+            <Badge icoon={icoon} kleur={kleur} grootte={28} icoonGrootte={15} />
             <div className="text-lg font-bold">{waarde}</div>
             <div className="text-xs text-zacht">{label}</div>
           </div>
@@ -196,11 +199,12 @@ function Oefeningen() {
     <>
       <div className="grid grid-cols-3 gap-2 text-center">
         {[
-          ['Workouts 7 d', dezeWeek.length],
-          ['Volume 7 d', `${kgTekst(Math.round(dezeWeek.reduce((s, w) => s + volumeVan(w), 0) / 100) / 10)} t`],
-          ['Totaal', workouts.length],
-        ].map(([label, waarde]) => (
-          <div key={label} className="kaart !p-3">
+          ['Workouts 7 d', dezeWeek.length, 'training', 'var(--pace-training)'],
+          ['Volume 7 d', `${kgTekst(Math.round(dezeWeek.reduce((s, w) => s + volumeVan(w), 0) / 100) / 10)} t`, 'grafiek', 'var(--pace-primair)'],
+          ['Totaal', workouts.length, 'trofee', 'var(--pace-vet)'],
+        ].map(([label, waarde, icoon, kleur]) => (
+          <div key={label} className="kaart tint flex flex-col items-center gap-1 !p-3" style={{ '--tint': kleur }}>
+            <Badge icoon={icoon} kleur={kleur} grootte={28} icoonGrootte={15} />
             <div className="text-lg font-bold">{waarde}</div>
             <div className="text-xs text-zacht">{label}</div>
           </div>

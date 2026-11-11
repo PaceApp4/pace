@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { korteDatum } from '../lib/datum.js';
 
 // Eenvoudige lijngrafiek. punten: [{ datum: '2026-11-11', waarde: 82.5 }]
 // Tik op de grafiek om een punt te bekijken.
 export default function LijnGrafiek({ punten, eenheid = '', kleur = 'var(--pace-primair)', hoogte = 160, opmaak }) {
   const [gekozen, zetGekozen] = useState(null);
+  const kleurId = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const fmt = opmaak ?? ((w) => (Math.round(w * 10) / 10).toLocaleString('nl-NL'));
 
   if (punten.length === 0) {
@@ -72,6 +73,18 @@ export default function LijnGrafiek({ punten, eenheid = '', kleur = 'var(--pace-
         <text x={breedte - rechts} y={hoogte - 6} fontSize="10" textAnchor="end" fill="var(--pace-zacht)">
           {korteDatum(punten[punten.length - 1].datum)}
         </text>
+        <defs>
+          <linearGradient id={`vul-${kleurId}`} x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={kleur} stopOpacity="0.28" />
+            <stop offset="100%" stopColor={kleur} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        {punten.length > 1 && (
+          <path
+            d={`${pad} L${x(punten.length - 1).toFixed(1)},${hoogte - onder} L${x(0).toFixed(1)},${hoogte - onder} Z`}
+            fill={`url(#vul-${kleurId})`}
+          />
+        )}
         <path d={pad} fill="none" stroke={kleur} strokeWidth="2.25" strokeLinejoin="round" strokeLinecap="round" />
         {punten.map((p, i) => (
           <circle

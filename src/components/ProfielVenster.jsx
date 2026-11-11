@@ -54,6 +54,7 @@ function Formulier({ opgeslagen, bewaarProfiel, doelen, bewaarDoelen, sluit, too
   return (
     <Venster titel="Profiel en voedingsplan" sluit={sluit}>
       <div className="space-y-4">
+        <Veld label="Voornaam (voor de begroeting)" waarde={p.naam} wijzig={zet('naam')} />
         <Keuze
           label="Geslacht"
           waarde={p.geslacht}

@@ -47,6 +47,7 @@ export const STANDAARD_DOELEN = {
 export const STANDAARD_WATERKNOPPEN = [250, 500];
 
 export const STANDAARD_PROFIEL = {
+  naam: '',
   geslacht: 'man',
   leeftijd: '',
   lengte: '', // cm

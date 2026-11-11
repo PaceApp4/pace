@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, useDoelen } from '../db.js';
 import { MAALTIJDEN, rond, rond1, totaalVan, waardenVoor } from '../lib/voeding.js';
+import { verschuif } from '../lib/datum.js';
 import DatumKiezer from '../components/DatumKiezer.jsx';
 import Venster from '../components/Venster.jsx';
 import VoedingToevoegen from '../components/VoedingToevoegen.jsx';
 import HoeveelheidFormulier from '../components/HoeveelheidFormulier.jsx';
 import { Voortgang } from '../components/Balk.jsx';
 import Icoon from '../components/Icoon.jsx';
+import Badge from '../components/Badge.jsx';
 
 // Het voedingsdagboek: per maaltijd zien en loggen wat je gegeten hebt.
 export default function Voeding({ datum, zetDatum }) {
@@ -18,9 +20,19 @@ export default function Voeding({ datum, zetDatum }) {
   const regels =
     useLiveQuery(() => db.voedingslog.where('datum').equals(datum).sortBy('tijd'), [datum]) ?? [];
   const totaal = totaalVan(regels);
+  const gisteren =
+    useLiveQuery(() => db.voedingslog.where('datum').equals(verschuif(datum, -1)).toArray(), [datum]) ?? [];
+
+  async function kopieerGisteren(maaltijd) {
+    const nu = Date.now();
+    const kopie = gisteren
+      .filter((r) => r.maaltijd === maaltijd.sleutel)
+      .map(({ id, ...rest }, i) => ({ ...rest, datum, tijd: nu + i }));
+    await db.voedingslog.bulkAdd(kopie);
+  }
 
   return (
-    <div className="space-y-3">
+    <div className="binnenkomen space-y-3">
       <DatumKiezer titel="Voeding" datum={datum} zetDatum={zetDatum} />
 
       {/* Dagtotaal */}
@@ -32,7 +44,10 @@ export default function Voeding({ datum, zetDatum }) {
           ['Vet', totaal.vet, doelen.vet, ' g', 'var(--pace-vet)'],
         ].map(([label, waarde, doel, eenheid, kleur]) => (
           <div key={label} className="min-w-0 space-y-1.5">
-            <div className="text-xs font-medium text-zacht">{label}</div>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-zacht">
+              <span className="h-2 w-2 rounded-full" style={{ background: kleur }} />
+              {label}
+            </div>
             <div className="text-[15px] font-bold">
               {rond(waarde)}
               <span className="text-[11px] font-medium text-zacht">
@@ -53,6 +68,7 @@ export default function Voeding({ datum, zetDatum }) {
         return (
           <section key={maaltijd.sleutel} className="kaart !pb-2">
             <div className="flex items-center gap-3">
+              <Badge icoon={maaltijd.icoon} kleur={maaltijd.kleur} />
               <div className="flex-1">
                 <h2 className="text-[15px] font-semibold">{maaltijd.label}</h2>
                 <p className="text-xs text-zacht">
@@ -60,13 +76,25 @@ export default function Voeding({ datum, zetDatum }) {
                 </p>
               </div>
               <button
-                className="knop flex h-11 w-11 items-center justify-center rounded-[10px] bg-primair text-op-primair"
+                className="knop flex h-11 w-11 items-center justify-center rounded-[12px] text-white"
+                style={{ background: maaltijd.kleur }}
                 onClick={() => zetToevoegenAan(maaltijd)}
                 aria-label={`Toevoegen aan ${maaltijd.label}`}
               >
                 <Icoon naam="plus" />
               </button>
             </div>
+
+            {eigenRegels.length === 0 && gisteren.some((r) => r.maaltijd === maaltijd.sleutel) && (
+              <button
+                className="knop mt-2 flex min-h-10 w-full items-center justify-center gap-2 rounded-[12px] bg-vlak text-sm font-semibold"
+                onClick={() => kopieerGisteren(maaltijd)}
+              >
+                <Icoon naam="kopieer" grootte={16} />
+                Zelfde als gisteren ({gisteren.filter((r) => r.maaltijd === maaltijd.sleutel).length} items,{' '}
+                {rond(totaalVan(gisteren.filter((r) => r.maaltijd === maaltijd.sleutel)).kcal)} kcal)
+              </button>
+            )}
 
             {eigenRegels.length > 0 && (
               <ul className="mt-2 divide-y divide-rand border-t border-rand">

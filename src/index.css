@@ -23,9 +23,13 @@
   --pace-eiwit: #4f46e5;
   --pace-koolh: #a78bfa;
   --pace-vet: #f59e0b;
-  --pace-water: #4f46e5;
-  --pace-stappen: #0a0f1f;
-  --pace-slaap: #a78bfa;
+  --pace-water: #0ea5e9;
+  --pace-stappen: #16a34a;
+  --pace-slaap: #8b5cf6;
+  --pace-training: #f97316;
+  --pace-roze: #ec4899;
+  --pace-schaduw: 0 1px 2px rgb(15 23 42 / 0.04), 0 4px 16px rgb(15 23 42 / 0.05);
+  --pace-hero: linear-gradient(135deg, #4f46e5 0%, #6d5bf0 55%, #a78bfa 100%);
   color-scheme: light;
 }
 
@@ -45,8 +49,12 @@
   --pace-koolh: #22d3ee;
   --pace-vet: #f59e0b;
   --pace-water: #22d3ee;
-  --pace-stappen: #2563eb;
-  --pace-slaap: #22d3ee;
+  --pace-stappen: #22c55e;
+  --pace-slaap: #a78bfa;
+  --pace-training: #fb923c;
+  --pace-roze: #f472b6;
+  --pace-schaduw: 0 1px 2px rgb(0 0 0 / 0.25);
+  --pace-hero: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #0891b2 100%);
   color-scheme: dark;
 }
 
@@ -65,6 +73,10 @@
   --color-goed: #22c55e;
   --color-letop: #f97316;
   --color-over: #ef4444;
+  --color-water: var(--pace-water);
+  --color-slaap: var(--pace-slaap);
+  --color-stappen: var(--pace-stappen);
+  --color-training: var(--pace-training);
 }
 
 /* Basisregels in een 'layer', zodat Tailwind-klassen ze kunnen overschrijven. */
@@ -126,9 +138,86 @@ button {
 .kaart {
   background: var(--pace-kaart);
   border: 1px solid var(--pace-rand);
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 16px;
+  box-shadow: var(--pace-schaduw);
 }
+
+/* Getinte kaart in de kleur van --tint (bijv. water, slaap, stappen). */
+.tint {
+  background: color-mix(in srgb, var(--tint) 11%, var(--pace-kaart));
+  border-color: color-mix(in srgb, var(--tint) 22%, var(--pace-rand));
+}
+
+/* Rond icoonvlakje in de kleur van --tint. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: var(--tint);
+  background: color-mix(in srgb, var(--tint) 16%, transparent);
+}
+
+.hero {
+  background: var(--pace-hero);
+  color: #fff;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--pace-primair) 70%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Zachte lichtcirkels in de hero-kaart. */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.08);
+  pointer-events: none;
+}
+.hero::before {
+  width: 220px;
+  height: 220px;
+  right: -70px;
+  top: -90px;
+}
+.hero::after {
+  width: 140px;
+  height: 140px;
+  left: -50px;
+  bottom: -70px;
+}
+
+.glas {
+  background: rgb(255 255 255 / 0.14);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 14px;
+}
+
+@keyframes binnenkomen {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.binnenkomen > * {
+  animation: binnenkomen 0.35s ease-out both;
+}
+.binnenkomen > *:nth-child(2) { animation-delay: 0.03s; }
+.binnenkomen > *:nth-child(3) { animation-delay: 0.06s; }
+.binnenkomen > *:nth-child(4) { animation-delay: 0.09s; }
+.binnenkomen > *:nth-child(5) { animation-delay: 0.12s; }
+.binnenkomen > *:nth-child(6) { animation-delay: 0.15s; }
+.binnenkomen > *:nth-child(n + 7) { animation-delay: 0.18s; }
 
 .knop {
   transition: opacity 0.1s ease, transform 0.1s ease;
@@ -142,4 +231,9 @@ button {
 .knop:disabled {
   opacity: 0.4;
 }
+}
+
+/* In donker is primair blauw als tekst te donker; daar een lichtere tint. */
+[data-thema='donker'] .text-primair {
+  color: #60a5fa;
 }

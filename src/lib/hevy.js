@@ -6,6 +6,11 @@ import { lokaleDatum } from './training.js';
 
 // Eenvoudige CSV-lezer die ook komma's en regeleinden binnen "aanhalingstekens" aankan.
 export function leesCsv(tekst) {
+  // Komma, puntkomma of tab: kijk wat de kopregel gebruikt.
+  const einde = tekst.indexOf('\n');
+  const kop = einde > 0 ? tekst.slice(0, einde) : tekst;
+  const tellen = (t) => kop.split(t).length;
+  const scheiding = ['\t', ';', ','].sort((a, b) => tellen(b) - tellen(a))[0];
   const rijen = [];
   let rij = [];
   let veld = '';
@@ -20,7 +25,7 @@ export function leesCsv(tekst) {
       } else if (c === '"') tussenQuotes = false;
       else veld += c;
     } else if (c === '"') tussenQuotes = true;
-    else if (c === ',') {
+    else if (c === scheiding) {
       rij.push(veld);
       veld = '';
     } else if (c === '\n' || c === '\r') {
@@ -38,12 +43,14 @@ export function leesCsv(tekst) {
   return rijen.filter((r) => r.some((v) => v.trim() !== ''));
 }
 
-const MAANDEN = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+const MAANDEN = {
+  jan: 0, feb: 1, mar: 2, mrt: 2, apr: 3, may: 4, mei: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, okt: 9, nov: 10, dec: 11,
+};
 
 // '28 Nov 2025, 17:25' of '2025-11-28 17:25:00' -> milliseconden
 export function leesHevyTijd(tekst) {
   const t = String(tekst ?? '').trim();
-  let m = t.match(/^(\d{1,2})\s+([A-Za-z]{3})\w*\s+(\d{4}),?\s+(\d{1,2}):(\d{2})/);
+  let m = t.match(/^(\d{1,2})\s+([A-Za-z]{3})[A-Za-z.]*\s+(\d{4}),?\s+(\d{1,2}):(\d{2})/);
   if (m && MAANDEN[m[2].toLowerCase()] !== undefined) {
     return new Date(+m[3], MAANDEN[m[2].toLowerCase()], +m[1], +m[4], +m[5]).getTime();
   }

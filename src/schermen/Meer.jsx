@@ -7,7 +7,9 @@ import { leesGetal, rond } from '../lib/voeding.js';
 import { DOELEN } from '../lib/plan.js';
 import Veld, { Keuze } from '../components/Veld.jsx';
 import Icoon from '../components/Icoon.jsx';
+import Badge from '../components/Badge.jsx';
 import ProfielVenster from '../components/ProfielVenster.jsx';
+import OpdrachtUitleg from '../components/OpdrachtUitleg.jsx';
 import { useMelding } from '../components/Melding.jsx';
 
 const DOELVELDEN = [
@@ -22,8 +24,13 @@ const DOELVELDEN = [
   { sleutel: 'slaapUren', label: 'Slaap', eenheid: 'uur' },
 ];
 
-function Kop({ children }) {
-  return <h2 className="text-[15px] font-semibold">{children}</h2>;
+function Kop({ children, icoon, kleur }) {
+  return (
+    <h2 className="flex items-center gap-2.5 text-[15px] font-semibold">
+      {icoon && <Badge icoon={icoon} kleur={kleur} grootte={30} icoonGrootte={16} />}
+      {children}
+    </h2>
+  );
 }
 
 // Instellingen: profiel, doelen, weergave, import en back-up.
@@ -87,11 +94,11 @@ export default function Meer() {
   const doelNaam = DOELEN.find((d) => d.sleutel === profiel.doel)?.label;
 
   return (
-    <div className="space-y-3">
+    <div className="binnenkomen space-y-3">
       <h1 className="text-[26px] font-bold tracking-tight">Meer</h1>
 
       <button className="knop kaart flex w-full items-center gap-3 text-left" onClick={() => zetProfielOpen(true)}>
-        <Icoon naam="lichaam" className="text-zacht" />
+        <Badge icoon="lichaam" kleur="var(--pace-roze)" />
         <span className="flex-1">
           <span className="block text-[15px] font-semibold">Profiel en voedingsplan</span>
           <span className="block text-xs text-zacht">
@@ -104,7 +111,7 @@ export default function Meer() {
       </button>
 
       <section className="kaart space-y-3">
-        <Kop>Dagdoelen</Kop>
+        <Kop icoon="vlam" kleur="var(--pace-primair)">Dagdoelen</Kop>
         <div className="grid grid-cols-2 gap-3">
           {DOELVELDEN.map((veld) => (
             <Veld
@@ -142,7 +149,7 @@ export default function Meer() {
       </section>
 
       <section className="kaart space-y-3">
-        <Kop>Weergave</Kop>
+        <Kop icoon="maan" kleur="var(--pace-slaap)">Weergave</Kop>
         <Keuze
           waarde={thema}
           kies={(k) => {
@@ -158,19 +165,28 @@ export default function Meer() {
       </section>
 
       <section className="kaart space-y-2">
-        <Kop>Apple Gezondheid en Zepp</Kop>
+        <Kop icoon="stappen" kleur="var(--pace-stappen)">Apple Gezondheid en Zepp</Kop>
         <p className="text-sm text-zacht">
-          Stappen en slaap komen binnen via een Opdracht op je iPhone. De Opdracht zet ze op het
-          klembord; op Vandaag tik je daarna op ‘Stappen en slaap plakken’. Je kunt ze ook zelf
-          invullen door op de kaart Slaap of Stappen te tikken.
+          Zepp stuurt je stappen en slaap naar Apple Gezondheid. Een Opdracht haalt ze daar op en
+          zet ze op het klembord; op Vandaag tik je dan op ‘Stappen en slaap plakken’.
         </p>
+        <details className="group rounded-[12px] bg-vlak p-3">
+          <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold">
+            Zo maak je de Opdracht (eenmalig, ±10 min)
+            <Icoon naam="rechts" grootte={16} className="transition-transform group-open:rotate-90" />
+          </summary>
+          <div className="pt-3">
+            <OpdrachtUitleg />
+          </div>
+        </details>
       </section>
 
       <section className="kaart space-y-3">
-        <Kop>Hevy-gegevens importeren</Kop>
+        <Kop icoon="training" kleur="var(--pace-training)">Hevy-gegevens importeren</Kop>
         <p className="text-sm text-zacht">
-          In Hevy: Profiel › Instellingen › Export &amp; import › Export workouts. Kies daarna hier
-          het CSV-bestand. Al geïmporteerde workouts worden overgeslagen.
+          In Hevy: Profiel › tandwiel (Instellingen) › Export &amp; Import Data › Export workouts.
+          Bewaar het bestand in Bestanden en kies het hier. Al geïmporteerde workouts worden
+          overgeslagen, dus je kunt later gerust opnieuw importeren.
         </p>
         <button
           className="knop flex w-full items-center justify-center gap-2 rounded-[12px] bg-vlak py-3 font-semibold"
@@ -183,7 +199,7 @@ export default function Meer() {
       </section>
 
       <section className="kaart space-y-3">
-        <Kop>Back-up</Kop>
+        <Kop icoon="bestand" kleur="var(--pace-water)">Back-up</Kop>
         <p className="text-sm text-zacht">
           Je gegevens staan alleen op dit toestel. Maak af en toe een back-up en bewaar die in
           Bestanden of iCloud Drive.

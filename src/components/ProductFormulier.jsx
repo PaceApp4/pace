@@ -5,7 +5,7 @@ import Veld from './Veld.jsx';
 
 // Formulier om een eigen product te maken of te wijzigen.
 // 'product' is leeg (null) bij een nieuw product.
-export default function ProductFormulier({ product, beginNaam = '', klaar, verwijderd }) {
+export default function ProductFormulier({ product, beginNaam = '', barcode = '', klaar, verwijderd }) {
   const [naam, zetNaam] = useState(product?.naam ?? beginNaam);
   const [merk, zetMerk] = useState(product?.merk ?? '');
   const [eenheid, zetEenheid] = useState(product?.eenheid ?? 'g');
@@ -34,6 +34,7 @@ export default function ProductFormulier({ product, beginNaam = '', klaar, verwi
       eenheid,
       portie: leesGetal(portie),
       per100,
+      barcode: product?.barcode || barcode || '',
     };
 
     if (product) {
@@ -55,6 +56,9 @@ export default function ProductFormulier({ product, beginNaam = '', klaar, verwi
 
   return (
     <div className="space-y-3">
+      {(product?.barcode || barcode) && (
+        <p className="text-xs text-zacht">Barcode {product?.barcode || barcode}</p>
+      )}
       <Veld label="Naam" waarde={naam} wijzig={zetNaam} placeholder="bijv. Magere kwark" />
       <Veld label="Merk (mag leeg blijven)" waarde={merk} wijzig={zetMerk} />
 

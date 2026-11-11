@@ -1,4 +1,4 @@
-# Pace – handleiding versie 2
+# Pace – handleiding versie 2.1
 
 Geschreven voor Windows 11 en een iPhone. Namen van knoppen kunnen per versie een klein beetje afwijken.
 
@@ -34,30 +34,69 @@ Geschreven voor Windows 11 en een iPhone. Namen van knoppen kunnen per versie ee
 
 ---
 
-## Bijwerken van fase 1 naar versie 2
+## Nieuw in versie 2.1
 
-De nieuwe bestanden staan al in je map `pace-fase1\pace`. Je gegevens op je iPhone blijven bewaard.
+- **Meer kleur:** kleurverloop op de calorie-kaart, gekleurde kaarten voor macro's, water, slaap, stappen en training, iconen per maaltijd, een begroeting met je naam (Meer › Profiel) en vloeiende overgangen.
+- **Barcodescanner:** bij een maaltijd tik je op het barcode-icoon naast het zoekveld. Richt de camera op de barcode; het scannen gaat vanzelf. De eerste keer vraagt de iPhone om toegang tot de camera: tik op **Sta toe**. Lukt de camera niet, typ dan het nummer onder de barcode.
+- **Voedingsdatabase (Open Food Facts):** kies **Online zoeken**, typ bijvoorbeeld ‘kwark’ en tik op **Zoek … in Open Food Facts**. Nederlandse producten staan bovenaan, met Nutri-Score. Een gekozen product wordt bewaard bij **Mijn producten**, zodat het de volgende keer ook zonder internet werkt.
+- **Zelfde als gisteren:** is een maaltijd nog leeg en at je gisteren iets bij die maaltijd, dan kopieer je het met één tik.
+- **Stappen en slaap uit Apple Gezondheid:** zie het stappenplan hieronder. Het staat ook in de app bij **Meer › Apple Gezondheid en Zepp**.
 
-1. **Eerst een back-up op je iPhone.** Open Pace, tik op **Meer › Back-up maken** en kies **Bewaar in Bestanden**.
-2. Open **Visual Studio Code** met de map `pace` (**File › Open Folder…**).
-3. Klik op **Terminal › New Terminal** en typ (er is een nieuw lettertype bijgekomen):
+Open Food Facts is gratis en open, maar wil niet te veel verzoeken: Pace zoekt daarom pas als je op de knop tikt, en maximaal één keer per 6 seconden.
+
+## Stappen en slaap uit Zepp en Apple Gezondheid
+
+Een web-app op je beginscherm mag Apple Gezondheid niet zelf lezen. Daarom gaat het zo: **Zepp → Apple Gezondheid → Opdracht → klembord → Pace**.
+
+1. **Zepp naar Gezondheid.** Open de app **Gezondheid** › tik op je profielfoto rechtsboven › **Apps** › **Zepp** › zet **Stappen** en **Slaap** aan. Kijk daarna in Gezondheid of je slaap van vannacht er staat.
+2. **Nieuwe Opdracht.** Open de app **Opdrachten**, tik op **+** en noem hem `Pace bijwerken`.
+3. **Stappen zoeken.** Tik op **Voeg taak toe**, zoek op ‘gezondheid’ en kies de taak die met **Zoek** begint (Engels: *Find Health Samples*). Kies Type **Stappen** en voeg het filter **Begindatum is Vandaag** toe.
+4. **Optellen.** Voeg **Bereken statistieken** toe en kies **Som**. Voeg daarna **Stel variabele in** toe en noem de variabele `Stappen`.
+5. **Slaap zoeken.** Voeg nog een keer de Zoek-gezondheid-taak toe. Type **Slaapanalyse**, filter **Begindatum valt in de laatste 1 dagen**. Meet je iPhone ook je slaap? Voeg dan het filter **Bron is Zepp** toe, anders telt de slaap dubbel.
+6. **Per slaapstuk.** Voeg **Herhaal met elk** toe. Zet daarbinnen:
+   - **Haal details op van gezondheidsitem** › **Waarde**
+   - nog een keer › **Begindatum**
+   - nog een keer › **Einddatum**
+   - **Bereken tijd tussen datums**: van *Begindatum* tot *Einddatum*, in **Minuten**
+   - een **Tekst**-taak met precies: `fase=[Waarde];min=[Tijd tussen datums]` (de woorden tussen haken kies je als variabele door erop te tikken)
+7. **Datum.** Na **Einde herhaling**: **Formatteer datum** › *Huidige datum* › Datumnotatie **Aangepast** › `yyyy-MM-dd`.
+8. **Alles samen.** Een **Tekst**-taak met op aparte regels:
 
    ```
-   npm install
+   PACE
+   datum=[Geformatteerde datum]
+   stappen=[Stappen]
+   [Resultaten van herhaling]
    ```
 
-4. Typ daarna:
+9. **Kopiëren.** Voeg **Kopieer naar klembord** toe, en eventueel **Toon melding** met ‘Open Pace en tik op plakken’.
+10. **Testen.** Tik op ▶ om de Opdracht te draaien. Geef de eerste keer toegang tot Gezondheid (Stappen en Slaap). Open Pace en tik op **Vandaag** op **Stappen en slaap plakken uit Opdracht**. Tik op **Plak** als de iPhone dat vraagt.
+11. **Elke ochtend klaar (optioneel).** Opdrachten › **Automatisering** › **+** › **Tijdstip**, bijv. 09:00 › **Voer direct uit** › kies `Pace bijwerken`.
 
-   ```
-   npm run dev
-   ```
+**Slaapscore:** de score uit de Zepp-app zelf komt (voor zover bekend) niet in Apple Gezondheid terecht. Pace rekent daarom een eigen score uit je slaapduur, diepe slaap, REM-slaap en de tijd dat je wakker lag. Wil je toch de Zepp-score zien? Tik op de slaapkaart en vul hem in; die gaat dan voor.
 
-   Houd **Ctrl** ingedrukt en klik op `http://localhost:5173/`. Kijk of alles werkt. Stoppen doe je met **Ctrl + C**.
-5. Open **GitHub Desktop**. Links zie je de gewijzigde bestanden.
-6. Typ linksonder bij **Summary**: `Versie 2`.
-7. Klik op **Commit to main** en daarna bovenin op **Push origin**.
-8. Wacht 1 à 2 minuten. Op github.com onder **Actions** zie je een groen vinkje als het klaar is.
-9. Sluit Pace op je iPhone helemaal af (omhoog vegen) en open hem opnieuw. Zie je nog de oude versie, doe het dan nog een keer.
+**Werkt het plakken niet?** Pace zegt dan ‘Geen stappen of slaap gevonden’. Open de Opdracht, tik onderaan op ▶ en bekijk de tekst bij de laatste Tekst-taak: die moet beginnen met `PACE` en regels als `stappen=8412` en `fase=Kern;min=35` bevatten. Stuur me een schermafbeelding als het niet lukt.
+
+## Hevy-workouts overzetten
+
+1. Open **Hevy** › **Profiel** › tandwiel rechtsboven (**Instellingen**) › **Export & Import Data** › **Export workouts**.
+2. Kies **Bewaar in Bestanden** (of mail het bestand naar jezelf en bewaar de bijlage).
+3. Open Pace › **Meer** › **Hevy-gegevens importeren** › **CSV-bestand kiezen** en kies het bestand.
+4. Pace meldt hoeveel workouts zijn geïmporteerd. Bekende oefeningen worden gekoppeld aan de Pace-bibliotheek; onbekende krijgen hun Hevy-naam. Opnieuw importeren is veilig: dubbele workouts worden overgeslagen.
+
+---
+
+## Bijwerken naar een nieuwe versie
+
+De nieuwe bestanden zet Claude direct in je map `pace-fase1\pace`. Je gegevens op je iPhone blijven bewaard.
+
+1. **Eerst een back-up op je iPhone:** Pace › **Meer** › **Back-up maken** › **Bewaar in Bestanden**.
+2. Open **Visual Studio Code** met de map `pace`, klik op **Terminal › New Terminal** en typ `npm install` (versie 2.1 heeft de barcodescanner erbij).
+3. Typ `npm run dev`, houd **Ctrl** ingedrukt en klik op `http://localhost:5173/` om te kijken of alles werkt. Stoppen met **Ctrl + C**. (De camera werkt op de laptop alleen als er een webcam is; op je iPhone testen gaat via de online versie.)
+4. Open **GitHub Desktop**, typ bij **Summary** bijvoorbeeld `Versie 2.1`, klik op **Commit to main** en daarna op **Push origin**.
+5. Wacht 1 à 2 minuten (op github.com onder **Actions** verschijnt een groen vinkje). Sluit Pace op je iPhone helemaal af en open hem opnieuw; zie je nog de oude versie, doe dat dan nog een keer.
+
+De melding over ‘vulnerabilities’ bij `npm install` kun je negeren. Voer **niet** `npm audit fix --force` uit.
 
 ---
 
@@ -184,6 +223,9 @@ Maak in ieder geval een back-up voordat je een nieuwe fase installeert.
 | `src/lib/training.js` | Rekenwerk voor workouts: vorige sets, 1RM, records en volume |
 | `src/lib/hevy.js` | Import van de Hevy-export |
 | `src/lib/oefeningen.js` | De standaard oefeningenbibliotheek |
+| `src/lib/openfoodfacts.js` | Zoeken en barcodes opzoeken in Open Food Facts |
+| `src/components/BarcodeScanner.jsx` | De camera-scanner |
+| `src/components/OpdrachtUitleg.jsx` | Het stappenplan voor de Opdracht, zoals in de app |
 | `.github/workflows/deploy.yml` | Zet de app automatisch online na elke **Push origin** |
 
 **Over het voedingsplan:** het voorstel gebruikt de Mifflin-St Jeor-formule voor je rustverbranding, vermenigvuldigd met je activiteit. Afvallen = 20% minder, spieropbouw = 300 kcal extra. Eiwit: 2,2 g/kg bij afvallen, 2,0 bij spieropbouw, 1,8 bij op gewicht. Vet: minstens 25% van je calorieën. De rest is koolhydraten. Het is een startpunt, geen medisch advies.

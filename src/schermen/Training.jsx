@@ -4,6 +4,9 @@ import { db } from '../db.js';
 import { duurTekst, korteDatum } from '../lib/datum.js';
 import { aantalSets, kgTekst, startWorkout, volumeVan } from '../lib/training.js';
 import Icoon from '../components/Icoon.jsx';
+import Badge from '../components/Badge.jsx';
+
+const KLEUREN = ['var(--pace-primair)', 'var(--pace-training)', 'var(--pace-stappen)', 'var(--pace-slaap)', 'var(--pace-water)', 'var(--pace-roze)'];
 import RoutineVenster from '../components/RoutineVenster.jsx';
 import WorkoutDetail from '../components/WorkoutDetail.jsx';
 
@@ -26,7 +29,7 @@ export default function Training({ actief, openWorkout }) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="binnenkomen space-y-3">
       <h1 className="text-[26px] font-bold tracking-tight">Training</h1>
 
       {actief ? (
@@ -39,12 +42,14 @@ export default function Training({ actief, openWorkout }) {
           <Icoon naam="rechts" className="text-zacht" />
         </button>
       ) : (
-        <button
-          className="knop flex h-12 w-full items-center justify-center gap-2 rounded-[12px] bg-primair font-semibold text-op-primair"
-          onClick={() => start(null)}
-        >
-          <Icoon naam="plus" />
-          Lege workout starten
+        <button className="knop hero flex w-full items-center gap-3 text-left" onClick={() => start(null)}>
+          <span className="glas relative flex h-11 w-11 items-center justify-center">
+            <Icoon naam="play" grootte={18} />
+          </span>
+          <span className="relative flex-1">
+            <span className="block text-[17px] font-bold">Lege workout starten</span>
+            <span className="block text-xs opacity-80">Timer start direct, oefeningen voeg je onderweg toe</span>
+          </span>
         </button>
       )}
 
@@ -61,8 +66,11 @@ export default function Training({ actief, openWorkout }) {
             Nog geen routines. Maak er een, of rond een lege workout af en vink ‘Ook bewaren als routine’ aan.
           </p>
         )}
-        {routines.map((r) => (
+        {routines.map((r, i) => (
           <div key={r.id} className="kaart flex items-center gap-3 !py-3">
+            <span className="badge h-10 w-10 text-[15px] font-bold" style={{ '--tint': KLEUREN[i % KLEUREN.length] }}>
+              {r.naam.slice(0, 1).toUpperCase()}
+            </span>
             <button className="min-w-0 flex-1 text-left" onClick={() => zetRoutineOpen(r)}>
               <span className="block text-[15px] font-semibold">{r.naam}</span>
               <span className="block truncate text-xs text-zacht">
@@ -91,6 +99,7 @@ export default function Training({ actief, openWorkout }) {
                 className={`flex min-h-13 w-full items-center gap-3 py-2 text-left ${i > 0 ? 'border-t border-rand' : ''}`}
                 onClick={() => zetDetail(w)}
               >
+                <Badge icoon="training" kleur="var(--pace-training)" />
                 <span className="flex-1">
                   <span className="block text-[15px] font-semibold">{w.naam}</span>
                   <span className="block text-xs text-zacht">

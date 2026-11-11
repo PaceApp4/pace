@@ -1,6 +1,6 @@
 // Een voortgangsring. De inhoud (children) komt in het midden te staan.
 // Boven 100% kleurt de ring rood (over doel).
-export default function Ring({ waarde, doel, grootte = 160, dikte = 12, kleur, children, overKleur }) {
+export default function Ring({ waarde, doel, grootte = 160, dikte = 12, kleur, children, overKleur, spoor = 'var(--pace-spoor)' }) {
   const straal = (grootte - dikte) / 2;
   const omtrek = 2 * Math.PI * straal;
   const deel = doel > 0 ? Math.min(waarde / doel, 1) : 0;
@@ -14,7 +14,7 @@ export default function Ring({ waarde, doel, grootte = 160, dikte = 12, kleur, c
           cy={grootte / 2}
           r={straal}
           fill="none"
-          stroke="var(--pace-spoor)"
+          stroke={spoor}
           strokeWidth={dikte}
         />
         <circle
